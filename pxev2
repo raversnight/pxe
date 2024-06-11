@@ -1,3 +1,4 @@
+#!/bin/bash
 # Versie2 pxe server (2 nics 1e NAT 2e intern) - Compacte versie?
 # statisch ip server: 10.1.1.1 
 # dhcp range: 10.1.1.2 t/m 10.1.1.99 subnet mask 255.0.0.0
@@ -7,10 +8,10 @@ printf 'auto lo\niface lo inet loopback\nauto enp0s3\niface enp0s3 inet dhcp\nau
 
 printf 'interface=enp0s8\ndhcp-range=10.1.1.2,10.1.1.99,255.0.0.0,9h\nenable-tftp\ntftp-root=/var/ftpd\ndhcp-boot=pxelinux.0\nsynth-domain=test.lan,10.1.1.2,10.1.1.99,test-*\ndhcp-autoritative\n' > /etc/dnsmasq.conf
 
-
-
 #getest 28-3-2024 en WERKT :)
 printf '
 auto lo\niface lo inet loopback\n
 auto enp0s3\niface enp0s3 inet dhcp\n
 auto enp0s8\niface enp0s8 inet static\naddress 10.1.1.1\nnetmask 255.0.0.0\n' > /etc/network/interfaces
+
+apt remove wget
