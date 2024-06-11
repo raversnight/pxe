@@ -1,15 +1,17 @@
 #!/bin/bash
+#wget / curl kan vervangen worden door axel (zit gewoon in de repo) - usage: axel -n 1 -o LokaleNaam.iso http://website/download
+#deze versie van het script streeft naar zo min mogelijk tekens gebruiken
 #DEBIAN PXE NETWORK BOOT 1eNIC: NAT 2eNIC: intern netwerk- pxelinux voor lpxelinux.0 voor http boot, alles als root uitvoeren:
 apt install dnsmasq wget apt-cacher-ng -y
 
 printf '\nauto enp0s8 \niface enp0s8 inet static\naddress 10.1.1.1/8' >> /etc/network/interfaces
-ifup enp0s8
+#ifup enp0s8 #reboot aan het einde brengt deze interface ook weer up
 
 mkdir /ftpd/pxelinux.cfg -p
 
 printf 'interface=enp0s8\ndhcp-range=10.1.1.2,10.1.1.99,255.0.0.0,9h\nenable-tftp\ntftp-root=/ftpd\ndhcp-boot=pxelinux.0\nsynth-domain=test.lan,10.1.1.2,10.1.1.99\ndhcp-authoritative' > /etc/dnsmasq.conf
 /etc/init.d/dnsmasq restart
-	
+
 wget -P /tmp http://ftp.debian.org/debian/dists/bookworm/main/installer-amd64/current/images/netboot/netboot.tar.gz
 cd /tmp && tar -xzvf netboot.tar.gz
 #alles op 1 plaats plaatsen ipv subdirs en symlinks #menu.32 / ldlinux.c32 / libutil.c32 kopieren naar /ftpd
@@ -21,6 +23,7 @@ printf 'default vesamenu.c32\nlabel Debian12\nkernel linux initrd=initrd.gz vga=
 printf 'd-i debian-installer/locale string en_US.UTF-8\nd-i	debian-installer/language string en\nd-i debian-installer/country string NL\nd-i mirror/http/proxy string http://10.1.1.1:3142\nd-i mirror/http/hostname string deb.debian.org' > /ftpd/preseed.cfg
 
 apt remove wget -y
+reboot
 ---------------------------------------------------------------------------------------------------------------------
 #GPARTED LIVE werkt 21-04-2024!
 apt install nginx wget unzip -y
