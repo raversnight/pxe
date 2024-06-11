@@ -1,5 +1,7 @@
 #!/bin/bash
-# Versie2 pxe server (2 nics 1e NAT 2e intern) - Compacte versie?
+# t.ly/d1gzU 
+# Versie2 pxe server (2 nics 1e NAT 2e intern) - Compacte versie poging
+# DOEL: Pxe server met 2 NICs - 1 aan internet 1 aan intern netwerk
 # statisch ip server: 10.1.1.1 
 # dhcp range: 10.1.1.2 t/m 10.1.1.99 subnet mask 255.0.0.0
 apt install dnsmasq wget apt-cacher-ng micro-httpd pxelinux -y
