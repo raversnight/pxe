@@ -10,7 +10,7 @@ printf '\nauto enp0s8 \niface enp0s8 inet static\naddress 10.1.1.1/8' >> /etc/ne
 mkdir /ftpd/pxelinux.cfg -p
 
 printf 'interface=enp0s8\ndhcp-range=10.1.1.2,10.1.1.99,255.0.0.0,9h\nenable-tftp\ntftp-root=/ftpd\ndhcp-boot=pxelinux.0\nsynth-domain=test.lan,10.1.1.2,10.1.1.99\ndhcp-authoritative' > /etc/dnsmasq.conf
-/etc/init.d/dnsmasq restart
+#/etc/init.d/dnsmasq restart #reboot aan het einde herstart DNSMASQ automagisch
 
 wget -P /tmp http://ftp.debian.org/debian/dists/bookworm/main/installer-amd64/current/images/netboot/netboot.tar.gz
 cd /tmp && tar -xzvf netboot.tar.gz
