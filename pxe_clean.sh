@@ -20,7 +20,7 @@ cp /tmp/debian-installer/amd64/* /tmp/debian-installer/amd64/boot-screens/* /ftp
 
 printf 'default vesamenu.c32\nlabel Debian12\nkernel linux initrd=initrd.gz vga=788 url=tftp://10.1.1.1/preseed.cfg ipv6.disable=1 language=nl country=NL keymap=us' > /ftpd/pxelinux.cfg/default
 
-printf 'd-i debian-installer/locale string en_US.UTF-8\nd-i	debian-installer/language string en\nd-i debian-installer/country string NL\nd-i mirror/http/proxy string http://10.1.1.1:3142\nd-i mirror/http/hostname string deb.debian.org' > /ftpd/preseed.cfg
+printf 'd-i debian-installer/locale string en_US.UTF-8\nd-i debian-installer/language string en\nd-i debian-installer/country string NL\nd-i mirror/http/proxy string http://10.1.1.1:3142\nd-i mirror/http/hostname string deb.debian.org' > /ftpd/preseed.cfg
 
 apt remove wget -y
 reboot
