@@ -14,20 +14,21 @@
 #PRESEED_URL="http://$STATIC_IP/preseed.cfg"
 #PROXY_URL="http://$STATIC_IP:3128"  # Vervang met de juiste proxy server en poort
 
+#tools nodig voor install - naderhand ook weer verwijderen?
 apt install dnsmasq wget apt-cacher-ng -y
 
-printf '\nauto enp0s8 \niface enp0s8 inet static\naddress 10.1.1.1/8' >> /etc/network/interfaces
 #ifup enp0s8 #reboot aan het einde brengt deze interface ook weer up
+printf '\nauto enp0s8 \niface enp0s8 inet static\naddress 10.1.1.1/8' >> /etc/network/interfaces
 
 mkdir /ftpd/pxelinux.cfg -p
 
-printf 'interface=enp0s8\ndhcp-range=10.1.1.2,10.1.1.99,255.0.0.0,9h\nenable-tftp\ntftp-root=/ftpd\ndhcp-boot=pxelinux.0\nsynth-domain=test.lan,10.1.1.2,10.1.1.99\ndhcp-authoritative' > /etc/dnsmasq.conf
 #/etc/init.d/dnsmasq restart #reboot aan het einde herstart DNSMASQ automagisch
+printf 'interface=enp0s8\ndhcp-range=10.1.1.2,10.1.1.99,255.0.0.0,9h\nenable-tftp\ntftp-root=/ftpd\ndhcp-boot=pxelinux.0\nsynth-domain=test.lan,10.1.1.2,10.1.1.99\ndhcp-authoritative' > /etc/dnsmasq.conf
 
+#alles op 1 plaats plaatsen ipv subdirs en symlinks #menu.32 / ldlinux.c32 / libutil.c32 kopieren naar /ftpd
 cd /tmp
 wget http://ftp.debian.org/debian/dists/bookworm/main/installer-amd64/current/images/netboot/netboot.tar.gz
-tar -xzvf netboot.tar.gz
-#alles op 1 plaats plaatsen ipv subdirs en symlinks #menu.32 / ldlinux.c32 / libutil.c32 kopieren naar /ftpd
+tar -xzvf *z
 
 cp /tmp/debian-installer/amd64/* /tmp/debian-installer/amd64/boot-screens/* /ftpd
 
@@ -35,10 +36,11 @@ printf 'default vesamenu.c32\nlabel Debian12\nkernel linux initrd=initrd.gz vga=
 
 printf 'd-i debian-installer/locale string en_US.UTF-8\nd-i debian-installer/language string en\nd-i debian-installer/country string NL\nd-i mirror/http/proxy string http://10.1.1.1:3142\nd-i mirror/http/hostname string deb.debian.org' > /ftpd/preseed.cfg
 
-apt remove wget -y
+#apt remove wget -y
 echo "reboot om alle services opnieuw te starten" 
+
 #---------------------------------------------------------------------------------------------------------------------
-#GPARTED LIVE werkt 21-04-2024!
+# GPARTED LIVE werkt 21-04-2024
 apt install nginx wget unzip -y
 wget -P /tmp https://netcologne.dl.sourceforge.net/project/gparted/gparted-live-stable/1.6.0-3/gparted-live-1.6.0-3-i686.zip
 cd /tmp && unzip gparted*.zip
@@ -47,7 +49,8 @@ printf '\nlabel Gparted Live\nMENU LABEL GParted Live\nkernel http://10.1.1.1/vm
 apt remove wget unzip -y
 #---------------------------------------------------------------------------------------------------------------------
 
-tar cvf "$(date '+%Y-%m-%d')-DebianPXEserver.tar" /var/tfpd /etc/dnsmasq.conf /etc/network/interfaces backup.sh
+# backup
+# tar cvf "$(date '+%Y-%m-%d')-DebianPXEserver.tar" /var/tfpd /etc/dnsmasq.conf /etc/network/interfaces backup.sh
 
 # mv /tmp/debian-installer/amd64/linux /ftpd/ #mv /tmp/debian-installer/amd64/initrd.gz /ftpd/ #mv /tmp/debian-installer/amd64/boot-screens/ldlinux.c32 /ftpd/ #mv /tmp/debian-installer/amd64/boot-screens/vesamenu.c32 /ftpd/ #mv /tmp/debian-installer/amd64/boot-screens/libutil.c32 /ftpd/ #mv /tmp/debian-installer/amd64/boot-screens/libcom32.c32 /ftpd/
 # uitwerken ipv vesamenu: cp /usr/lib/syslinux/modules/bios/menu.c32 /ftpd/ && cp /usr/lib/syslinux/modules/bios/ldlinux.c32 /ftpd
