@@ -20,7 +20,7 @@ apt install dnsmasq axel apt-cacher-ng -y
 #ifup enp0s8 #reboot aan het einde brengt deze interface ook weer up
 printf '\nauto enp0s8 \niface enp0s8 inet static\naddress 10.1.1.1/8' >> /etc/network/interfaces
 
-#/etc/init.d/dnsmasq restart #reboot aan het einde herstart DNSMASQ automagisch
+#/etc/init.d/dnsmasq restart #reboot aan het einde herstart DNSMASQ automagisch EN /tmp word geleegd
 printf 'interface=enp0s8\ndhcp-range=10.1.1.2,10.1.1.99,255.0.0.0,9h\nenable-tftp\ntftp-root=/ftpd\ndhcp-boot=pxelinux.0\nsynth-domain=test.lan,10.1.1.2,10.1.1.99\ndhcp-authoritative' > /etc/dnsmasq.conf
 
 #alles op 1 plaats plaatsen ipv subdirs en symlinks #menu.32 / ldlinux.c32 / libutil.c32 kopieren naar /ftpd
