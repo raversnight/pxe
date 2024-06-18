@@ -13,7 +13,7 @@ PROXY_URL="http://$STATIC_IP:3128"  # Vervang met de juiste proxy server en poor
 
 # Update en installeer vereiste pakketten
 sudo apt update
-sudo apt install -y dnsmasq apache2 syslinux-common ipxe wget
+sudo apt install -y apt-cacher-ng dnsmasq apache2 syslinux-common ipxe wget
 
 # Configureren van statisch IP-adres voor de netwerkinterface
 echo "Configureren van statisch IP-adres voor de interface $INTERFACE..."
