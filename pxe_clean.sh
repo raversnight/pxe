@@ -42,7 +42,7 @@ echo "reboot om alle services opnieuw te starten"
 apt install nginx wget unzip -y
 wget -P /tmp https://netcologne.dl.sourceforge.net/project/gparted/gparted-live-stable/1.6.0-3/gparted-live-1.6.0-3-i686.zip
 cd /tmp && unzip gparted*.zip
-cp /tmp/live/{vmlinuz,initrd.img,filesystem.squashfs} /var/www/html
+cp live/{vmlinuz,initrd.img,filesystem.squashfs} /var/www/html
 printf '\nlabel Gparted Live\nMENU LABEL GParted Live\nkernel http://10.1.1.1/vmlinuz initrd=http://10.1.1.1/initrd.img boot=live config components union=overlay username=user noswap noeject vga=788 fetch=http://10.1.1.1/filesystem.squashfs\n' >> /ftpd/pxelinux.cfg/default
 apt remove wget unzip -y
 #---------------------------------------------------------------------------------------------------------------------
