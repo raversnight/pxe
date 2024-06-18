@@ -5,38 +5,36 @@
 
 # Variabelen
 #INTERFACE="enp0s8"  # 2e Netwerk interface naam
-#STATIC_IP="192.168.1.1"
-#NETMASK="255.255.255.0"
-#DHCP_RANGE_START="192.168.1.50"
-#DHCP_RANGE_END="192.168.1.150"
-#TFTP_ROOT="/srv/tftp"
+#STATIC_IP="10.1.1.1"
+#NETMASK="8"
+#DHCP_RANGE_START="10.1.1.2"
+#DHCP_RANGE_END="10.1.1.99"
+#TFTP_ROOT="/ftpd"
 #DEBIAN_VERSION="bookworm"  # Pas deze aan naar de gewenste Debian versie (bookworm is versie 13)
 #PRESEED_URL="http://$STATIC_IP/preseed.cfg"
 #PROXY_URL="http://$STATIC_IP:3128"  # Vervang met de juiste proxy server en poort
 
 #tools nodig voor install - naderhand ook weer verwijderen?
-apt install dnsmasq wget apt-cacher-ng -y
+apt install dnsmasq axel apt-cacher-ng -y
 
 #ifup enp0s8 #reboot aan het einde brengt deze interface ook weer up
 printf '\nauto enp0s8 \niface enp0s8 inet static\naddress 10.1.1.1/8' >> /etc/network/interfaces
-
-mkdir /ftpd/pxelinux.cfg -p
 
 #/etc/init.d/dnsmasq restart #reboot aan het einde herstart DNSMASQ automagisch
 printf 'interface=enp0s8\ndhcp-range=10.1.1.2,10.1.1.99,255.0.0.0,9h\nenable-tftp\ntftp-root=/ftpd\ndhcp-boot=pxelinux.0\nsynth-domain=test.lan,10.1.1.2,10.1.1.99\ndhcp-authoritative' > /etc/dnsmasq.conf
 
 #alles op 1 plaats plaatsen ipv subdirs en symlinks #menu.32 / ldlinux.c32 / libutil.c32 kopieren naar /ftpd
 cd /tmp
-wget http://ftp.debian.org/debian/dists/bookworm/main/installer-amd64/current/images/netboot/netboot.tar.gz
+axel http://ftp.debian.org/debian/dists/bookworm/main/installer-amd64/current/images/netboot/netboot.tar.gz
 tar -xzvf *z
-
-cp /tmp/debian-installer/amd64/* /tmp/debian-installer/amd64/boot-screens/* /ftpd
+mkdir /ftpd/pxelinux.cfg -p
+cp debian-installer/amd64/* debian-installer/amd64/boot-screens/* /ftpd
 
 printf 'default vesamenu.c32\nlabel Debian12\nkernel linux initrd=initrd.gz vga=788 url=tftp://10.1.1.1/preseed.cfg ipv6.disable=1 language=nl country=NL keymap=us' > /ftpd/pxelinux.cfg/default
 
 printf 'd-i debian-installer/locale string en_US.UTF-8\nd-i debian-installer/language string en\nd-i debian-installer/country string NL\nd-i mirror/http/proxy string http://10.1.1.1:3142\nd-i mirror/http/hostname string deb.debian.org' > /ftpd/preseed.cfg
 
-#apt remove wget -y
+#apt remove axel -y
 echo "reboot om alle services opnieuw te starten" 
 
 #---------------------------------------------------------------------------------------------------------------------
