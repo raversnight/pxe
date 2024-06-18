@@ -61,6 +61,17 @@ LABEL debian
 # auto = true verwijderd
 EOF"
 
+# Maak iPXE script voor Debian installatie
+echo "Voorbereiden van iPXE script..."
+sudo bash -c "cat > $TFTP_ROOT/boot.ipxe <<EOF
+#!ipxe
+dhcp
+set base-url http://$STATIC_IP/debian-installer/$DEBIAN_VERSION
+kernel \${base-url}/linux auto=true priority=critical vga=788 initrd=initrd.gz url=$PRESEED_URL
+initrd \${base-url}/initrd.gz
+boot
+EOF"
+
 # Maak preseed bestand
 echo "Voorbereiden van preseed bestand..."
 sudo bash -c "cat > /var/www/html/preseed.cfg <<EOF
