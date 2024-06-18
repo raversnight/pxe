@@ -109,7 +109,7 @@ EOF"
 echo "Voorbereiden van de HTTP-server..."
 sudo mkdir -p /var/www/html/debian
 cd /var/www/html/debian
-sudo wget http://ftp.debian.org/debian/dists/$DEBIAN_VERSION/main/installer-amd64/current/images/netboot/netboot.tar.gz
+# sudo wget http://ftp.debian.org/debian/dists/$DEBIAN_VERSION/main/installer-amd64/current/images/netboot/netboot.tar.gz
 sudo tar -xzf netboot.tar.gz --strip-components=1
 
 # Herstart de services
