@@ -1,7 +1,7 @@
 #!/bin/bash
-# CHATGPT ASSISTED SCRIPT- CHECK FOR ERRORS
+# CHATGPT ASSISTED SCRIPT
 # Variabelen
-INTERFACE="enp0s8"  # Netwerkinterface naam
+INTERFACE="enp0s8"  # 2e Netwerk interface naam
 STATIC_IP="192.168.1.1"
 NETMASK="255.255.255.0"
 DHCP_RANGE_START="192.168.1.50"
@@ -57,7 +57,8 @@ TIMEOUT 600
 LABEL debian
   MENU LABEL Install Debian
   KERNEL debian-installer/$DEBIAN_VERSION/linux
-  APPEND vga=788 initrd=debian-installer/$DEBIAN_VERSION/initrd.gz auto=true priority=critical url=$PRESEED_URL
+  APPEND vga=788 initrd=debian-installer/$DEBIAN_VERSION/initrd.gz priority=critical url=$PRESEED_URL  
+# auto = true verwijderd
 EOF"
 
 # Maak preseed bestand
@@ -104,5 +105,9 @@ sudo tar -xzf netboot.tar.gz --strip-components=1
 echo "Herstarten van dnsmasq en apache2..."
 sudo systemctl restart dnsmasq
 sudo systemctl restart apache2
+
+# Ongebruikte pakketten verwijderen
+sudo apt remove wget -y
+sudo apt auto-remove -y
 
 echo "PXE-server configuratie voltooid."
