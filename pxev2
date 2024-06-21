@@ -14,6 +14,6 @@ printf 'interface=enp0s8\ndhcp-range=10.1.1.2,10.1.1.99,255.0.0.0,9h\nenable-tft
 printf '
 #auto lo\niface lo inet loopback\n
 #auto enp0s3\niface enp0s3 inet dhcp\n
-auto enp0s8\niface enp0s8 inet static\naddress 10.1.1.1\nnetmask 255.0.0.0\n' > /etc/network/interfaces
+auto enp0s8\niface enp0s8 inet static\naddress 10.1.1.1\nnetmask 255.0.0.0\n' > /etc/network/interfaces.d/enp0s8
 
 apt remove wget
