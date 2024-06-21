@@ -10,10 +10,10 @@ printf 'auto lo\niface lo inet loopback\nauto enp0s3\niface enp0s3 inet dhcp\nau
 
 printf 'interface=enp0s8\ndhcp-range=10.1.1.2,10.1.1.99,255.0.0.0,9h\nenable-tftp\ntftp-root=/var/ftpd\ndhcp-boot=pxelinux.0\nsynth-domain=test.lan,10.1.1.2,10.1.1.99,test-*\ndhcp-autoritative\n' > /etc/dnsmasq.conf
 
-#getest 28-3-2024 en WERKT :)
+#getest 28-3-2024 en WERKT :) kan ook als extra bestand geplaatst worden in /etc/network/interfaces.d/enp0s8 (NOG TESTEN)
 printf '
-auto lo\niface lo inet loopback\n
-auto enp0s3\niface enp0s3 inet dhcp\n
+#auto lo\niface lo inet loopback\n
+#auto enp0s3\niface enp0s3 inet dhcp\n
 auto enp0s8\niface enp0s8 inet static\naddress 10.1.1.1\nnetmask 255.0.0.0\n' > /etc/network/interfaces
 
 apt remove wget
